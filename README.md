@@ -165,12 +165,6 @@ flowchart TD
 
 ---
 
-## License
-
-This project is licensed under the MIT License.
-
----
-
 # Facebook Page Engagement Collector to BigQuery
 
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
@@ -338,12 +332,6 @@ The script prints a summary of results:
 ```text
 Summary: 25 pages processed successfully, 3 pages failed.
 ```
-
----
-
-## License
-
-This project is licensed under the **MIT License**.
 
 ---
 
@@ -588,12 +576,6 @@ Follow the prompts:
 
 ---
 
-## License
-
-This project is licensed under the MIT License.
-
----
-
 ## Example
 
 ```python
@@ -608,4 +590,139 @@ After running, the processed data will appear in your **BigQuery table** ready f
 
 ---
 
+# HelpDesk Ticket Exporter
+
+A Python script to fetch tickets from the [HelpDesk API](https://helpdesk.com) and export them to CSV files.  
+This tool handles multiple silos, date filters, and builds simple conversation transcripts for each ticket. It includes robust retry logic for API requests and saves full error responses when requests fail.
+
+---
+
+## Features
+
+- Fetch tickets from HelpDesk across multiple silos: `tickets`, `archive`, `spam`, `trash`.
+- Supports client-side date filters:
+  - Last N days
+  - Custom date ranges
+- Builds conversation transcripts from ticket events.
+- Calculates message counts: total, client, agent.
+- Handles pagination and retries for network/API issues.
+- Saves output as CSV in a specified folder.
+- Saves detailed error logs on failed requests.
+
+---
+
+## Requirements
+
+- Python 3.10+
+- Packages:
+  ```bash
+  pip install requests urllib3
+
+---
+
+## Setup
+
+1. **Clone this repository**
+
+   ```bash
+   git clone https://github.com/yourusername/helpdesk-ticket-exporter.git
+   cd helpdesk-ticket-exporter
+   ```
+
+2. **Set environment variables** (optional but recommended)
+
+   ```bash
+   export HELPDESK_ACCOUNT_ID="your_account_id"
+   export HELPDESK_PAT="your_personal_access_token"
+   ```
+
+3. **Configure output folder**
+   By default, CSV and error logs are saved to:
+
+   ```text
+   C:\Users\PM Shift\OneDrive\sc-v1\helpdesk_raw
+   ```
+
+   You can change this by updating `OUTPUT_DIR` in the script.
+
+---
+
+## Usage
+
+Run the script:
+
+```bash
+python helpdesk_exporter.py
+```
+
+The script will:
+
+1. Ask for your HelpDesk `account_id` and `PAT` if environment variables are not set.
+2. Prompt you to select a silo to export:
+
+   ```
+   1. Active tickets
+   2. Archive
+   3. Spam
+   4. Trash
+   5. All silos
+   ```
+3. Prompt you to select a date range:
+
+   ```
+   1. Last 7 days
+   2. Custom date range
+   3. All tickets
+   ```
+4. Fetch tickets from the HelpDesk API with retries and pagination.
+5. Apply client-side date filters.
+6. Save a CSV with tickets, assignments, tags, spam info, ratings, and conversation transcripts.
+7. Save full API error responses to a text file if any request fails.
+
+---
+
+## Output
+
+* CSV file with columns:
+
+```
+ticket_id, created_at, updated_at, silo, requester_email, requester_name,
+tags, spam_status, spam_reason, rating_score, rating_status, rating_comment,
+rating_request_sent, total_messages, client_messages, agent_messages, conversation,
+assigned_team_id, assigned_team_name, assigned_agent_id, assigned_agent_name
+```
+
+* Error logs (if API requests fail) are saved as:
+
+  ```
+  helpdesk_error_YYYYMMDD_HHMMSS.txt
+  ```
+
+---
+
+## Example
+
+```bash
+$ python helpdesk_exporter.py
+HelpDesk Tickets → CSV
+------------------------------
+Enter your HelpDesk account_id: 12345
+Enter your HelpDesk PAT: xxxxxxxx
+Choose folder (silo) to export: 1
+Choose date range: 1
+Requesting tickets page 1 (silo: tickets, total fetched: 0)...
+Requesting tickets page 2 (silo: tickets, total fetched: 50)...
+Total tickets fetched: 123
+Tickets after last-7-days filter: 42
+CSV saved to: C:\Users\PM Shift\OneDrive\sc-v1\helpdesk_raw\helpdesk_tickets_20260220_101530.csv
+Done.
+```
+
+---
+
+## Notes
+
+* The script currently supports `page`-based pagination using `x-total-pages` headers.
+* For accounts with very large ticket volumes, consider extending the script to fully support cursor-based pagination.
+* Defensive `.get()` usage ensures the script won’t crash if HelpDesk changes field names.
 
