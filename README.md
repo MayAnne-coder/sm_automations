@@ -484,3 +484,128 @@ Successfully uploaded 125 rows to BigQuery
 
 ---
 
+# LiveChat Transcript Downloader
+
+This Python script allows you to download LiveChat transcripts, process them, and upload the data directly to **Google BigQuery**. It includes features for extracting detailed chat information, agent mapping, visitor details, device/browser info, and chat ratings.
+
+---
+
+## Features
+
+- Download chat transcripts via LiveChat API (supports personal access token authentication)
+- Supports default last 7 days or custom date ranges
+- Extracts detailed chat info including:
+  - Agent Alias and Full Name
+  - Lead Name, Email, Address, Country
+  - Chat Status, Rating, Visitor Comments
+  - Chat Started Time, End Time, Chatting Duration, Queued Time
+  - Website Origin, Campaign, Referrer (Came From)
+  - OS, Browser, Device Type
+  - Conversation History
+- Converts timestamps to **Philippine Time (UTC+8)**
+- Formats queued time and validates time fields
+- Uploads processed data to Google BigQuery using a service account JSON key
+- Saves raw JSON chat data for auditing or further processing
+- Optional conversion of raw JSON to CSV
+
+---
+
+## Prerequisites
+
+- Python 3.8+
+- LiveChat **Account ID** and **Personal Access Token**
+- Google Cloud project with BigQuery enabled
+- Service Account JSON key with permissions to insert rows into your BigQuery dataset
+- Python libraries:
+  ```bash
+  pip install requests google-cloud-bigquery google-auth
+
+---
+
+## Setup
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/livechat-transcript-downloader.git
+   cd livechat-transcript-downloader
+   ```
+
+2. Update the configuration:
+
+   ```python
+   DATASET_ID = "Livechat_Data"         # Replace with your BigQuery dataset
+   TABLE_ID = "Livechat_Raw_Data_V2"    # Replace with your BigQuery table
+   CREDENTIALS_PATH = "path/to/your/service_account.json"
+   ```
+
+3. Make sure you have your **Account ID** and **Personal Access Token** from the LiveChat Developer Console.
+
+---
+
+## Usage
+
+Run the script:
+
+```bash
+python livechat_downloader.py
+```
+
+Follow the prompts:
+
+1. Enter your **Account ID**
+2. Enter your **Personal Access Token**
+3. Choose whether to download the last 7 days or specify a custom date range
+4. The script will fetch chats, process them, and upload directly to BigQuery
+
+---
+
+## Functions Overview
+
+* `validate_token(token)` – Checks token format
+* `get_date_range()` – Returns last 7 days in ISO format
+* `get_custom_date_range()` – Prompts user for custom dates
+* `get_agent_alias(users)` – Maps agent emails to aliases
+* `get_agent_full_name(agent_alias)` – Returns full agent name
+* `get_chat_status(thread)` – Extracts chat status from pre-chat form
+* `get_website_domain(website_origin)` – Standardizes website origin
+* `format_time_from_iso(iso_timestamp)` – Converts ISO timestamp to PH time
+* `calculate_chatting_time(started_time, end_time)` – Returns H:MM:SS format
+* `get_device_info(thread)` – Returns device type (Desktop/Mobile)
+* `process_chat_to_row(chat)` – Converts chat JSON to a BigQuery-ready row
+* `upload_to_bigquery(data)` – Uploads processed data to BigQuery
+* `download_chat_transcript(account_id, token, custom_range=False)` – Main function to fetch, process, and upload chats
+
+---
+
+## Notes
+
+* If no chats are found in the date range, the script will exit gracefully
+* Raw JSON of chats is saved locally (`raw_chats_data.json`) for backup
+* The script ensures all time fields are properly formatted (`HH:MM:SS`)
+* Supports automatic conversion of UTC timestamps to Philippine Time
+* Handles pre-chat and post-chat forms for visitor status and website ratings
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+## Example
+
+```python
+# Example usage
+ACCOUNT_ID = "your_account_id"
+TOKEN = "your_personal_access_token"
+
+download_chat_transcript(ACCOUNT_ID, TOKEN, custom_range=False)
+```
+
+After running, the processed data will appear in your **BigQuery table** ready for analysis.
+
+---
+
+
