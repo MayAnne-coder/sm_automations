@@ -344,3 +344,6 @@ Summary: 25 pages processed successfully, 3 pages failed.
 ## License
 
 This project is licensed under the **MIT License**.
+
+---
+
