@@ -165,6 +165,12 @@ flowchart TD
 
 ---
 
+## License
+
+MIT License © 2026 Cenix
+
+---
+
 # Facebook Page Engagement Collector to BigQuery
 
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
@@ -335,7 +341,9 @@ Summary: 25 pages processed successfully, 3 pages failed.
 
 ---
 
-Perfect — just like the previous script, you can create a **`README.md`** for this LiveChat transcript downloader so anyone (or future you) can quickly understand, set up, and run it. Here’s a ready-to-paste version tailored to your code:
+License
+
+MIT License © 2026 Cenix
 
 ---
 
@@ -475,6 +483,12 @@ Successfully uploaded 125 rows to BigQuery
 
 ---
 
+## License
+
+MIT License © 2026 Cenix
+
+---
+
 # LiveChat Transcript Downloader
 
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
@@ -593,6 +607,12 @@ download_chat_transcript(ACCOUNT_ID, TOKEN, custom_range=False)
 ```
 
 After running, the processed data will appear in your **BigQuery table** ready for analysis.
+
+---
+
+## License
+
+MIT License © 2026 Cenix
 
 ---
 
@@ -735,3 +755,8 @@ Done.
 * For accounts with very large ticket volumes, consider extending the script to fully support cursor-based pagination.
 * Defensive `.get()` usage ensures the script won’t crash if HelpDesk changes field names.
 
+---
+
+## License
+
+MIT License © 2026 Cenix
