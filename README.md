@@ -347,3 +347,140 @@ This project is licensed under the **MIT License**.
 
 ---
 
+Perfect — just like the previous script, you can create a **`README.md`** for this LiveChat transcript downloader so anyone (or future you) can quickly understand, set up, and run it. Here’s a ready-to-paste version tailored to your code:
+
+---
+
+# LiveChat Transcript Downloader to BigQuery
+
+This Python script automates downloading LiveChat transcripts and uploading them directly to **Google BigQuery**. It also allows processing chat data into CSV if needed.
+
+---
+
+## Features
+
+* Download chat transcripts for:
+
+  * Last 7 days (default)
+  * Custom date ranges
+* Extract detailed chat info:
+
+  * Chat ID, Agent/Client info, Contact Date
+  * Chat status, ratings, case resolution, visitor comments
+  * Queued time, chatting duration, device & OS info
+  * Conversation history with proper tagging
+* Upload processed data directly to **BigQuery**
+* Handle multiple agents and multiple chat events
+* Converts UTC timestamps to **Philippine Time (+8)**
+
+---
+
+## Prerequisites
+
+1. Python 3.8+
+2. Packages:
+
+```bash
+pip install requests google-cloud-bigquery google-auth
+```
+
+3. Google Cloud service account JSON key file with **BigQuery Data Editor** access.
+
+4. LiveChat account with:
+
+   * **Account ID**
+   * **Personal Access Token (PAT)**
+
+---
+
+## Configuration
+
+Update these constants in the script:
+
+```python
+DATASET_ID = "Livechat_Data"            # BigQuery dataset name
+TABLE_ID = "Livechat_Raw_Data_V2"       # BigQuery table name
+CREDENTIALS_PATH = "path/to/key.json"   # JSON key file path
+```
+
+---
+
+## Usage
+
+Run the script:
+
+```bash
+python livechat_downloader.py
+```
+
+The script will prompt:
+
+1. **Account ID**
+2. **Personal Access Token**
+3. **Date range option**:
+
+   * `1` → Last 7 days
+   * `2` → Custom date range (YYYY-MM-DD format)
+
+It will fetch chats, process them, and upload to BigQuery.
+
+---
+
+## BigQuery Upload
+
+* The script uses `google.cloud.bigquery` with the service account JSON.
+* Ensures all `TIME` fields (`Started Time`, `EndTime`, `Chatting Time`, `Queued Time`) are in valid format (`HH:MM:SS`) to prevent insert errors.
+* Errors are logged without stopping the entire upload.
+
+---
+
+## CSV Export (Optional)
+
+You can process raw JSON into a CSV for offline analysis:
+
+```python
+process_raw_chats('raw_chats_data.json', 'output.csv')
+```
+
+Fields include:
+
+* `Contact Date`, `Agent Alias`, `Agent Name`, `Chat ID`
+* `Lead Name`, `Lead Email`, `Lead Address`, `Lead Country`
+* `Rating`, `Chat Status`, `Website Origin`, `Website`
+* `Campaign`, `Started Time`, `EndTime`, `Chatting Time`
+* `Queued Time`, `Came from`, `Case Resolved`, `Website Rating`
+* `OS`, `Browser`, `Visitor's Comments`, `Device`, `Conversation`
+
+---
+
+## Notes
+
+* PH Time conversion is **UTC +8**
+* Handles missing or malformed timestamps, defaulting to `"00:00:00"`
+* Multi-region PATs (`dal:`, `fra:`) automatically set the `X-Region` header for LiveChat API
+* Unknown agents default to `'Unassigned'`
+* Visitor comments, chat ratings, and post-chat forms are extracted when available
+
+---
+
+## Example
+
+```bash
+LiveChat Transcript Downloader
+------------------------------
+IMPORTANT: You'll need both your Account ID and Personal Access Token
+1. Account ID can be found in the LiveChat Console URL or Developer Console
+2. Personal Access Token from Developer Console
+
+Please enter your Account ID: 12345
+Please enter your Personal Access Token: abcde-12345
+Would you like to:
+1. Download last 7 days
+2. Specify custom date range
+Enter choice (1 or 2): 1
+Fetching chats from 2026-02-13T10:00:00.000000Z to 2026-02-20T10:00:00.000000Z
+Successfully uploaded 125 rows to BigQuery
+```
+
+---
+
