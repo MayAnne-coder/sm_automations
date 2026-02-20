@@ -477,7 +477,8 @@ Successfully uploaded 125 rows to BigQuery
 
 # LiveChat Transcript Downloader
 
-
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green)](https://opensource.org/licenses/MIT)
 
 This Python script allows you to download LiveChat transcripts, process them, and upload the data directly to **Google BigQuery**. It includes features for extracting detailed chat information, agent mapping, visitor details, device/browser info, and chat ratings.
 
