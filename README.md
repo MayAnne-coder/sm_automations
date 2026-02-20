@@ -341,6 +341,9 @@ Perfect — just like the previous script, you can create a **`README.md`** for 
 
 # LiveChat Transcript Downloader to BigQuery
 
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green)](https://opensource.org/licenses/MIT)
+
 This Python script automates downloading LiveChat transcripts and uploading them directly to **Google BigQuery**. It also allows processing chat data into CSV if needed.
 
 ---
@@ -474,6 +477,8 @@ Successfully uploaded 125 rows to BigQuery
 
 # LiveChat Transcript Downloader
 
+
+
 This Python script allows you to download LiveChat transcripts, process them, and upload the data directly to **Google BigQuery**. It includes features for extracting detailed chat information, agent mapping, visitor details, device/browser info, and chat ratings.
 
 ---
@@ -591,6 +596,9 @@ After running, the processed data will appear in your **BigQuery table** ready f
 ---
 
 # HelpDesk Ticket Exporter
+
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green)](https://opensource.org/licenses/MIT)
 
 A Python script to fetch tickets from the [HelpDesk API](https://helpdesk.com) and export them to CSV files.  
 This tool handles multiple silos, date filters, and builds simple conversation transcripts for each ticket. It includes robust retry logic for API requests and saves full error responses when requests fail.
